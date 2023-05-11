@@ -63,10 +63,10 @@ public class ProductController : ControllerBase
     /// Get a specific product
     /// </summary>
     [HttpGet("{id}"), Authorize]
-    public ActionResult<Product> GetProduct(Guid id)
+    public ActionResult<Product> GetProduct(string id)
     {
-        var product = products.FirstOrDefault(e => e.Id == id);
-        if (product != null) Ok(product);
+        var product = products.FirstOrDefault(e => e.Id.ToString() == id);
+        if (product != null) return Ok(product);
         return NotFound();
     }
     /// <summary>
@@ -84,9 +84,9 @@ public class ProductController : ControllerBase
     /// Updates an existing product
     /// </summary>
     [HttpPut("{id}"), Authorize]
-    public ActionResult UpdateProduct(Guid id, [FromBody] UpdateProductDto dto)
+    public ActionResult UpdateProduct(string id, [FromBody] UpdateProductDto dto)
     {
-        var product = products.FirstOrDefault(e => e.Id == id);
+        var product = products.FirstOrDefault(e => e.Id.ToString() == id);
         if (product != null)
         {
             product.Name = dto.Name;
@@ -101,11 +101,10 @@ public class ProductController : ControllerBase
     /// Deletes an existing product
     /// </summary>
     [HttpDelete("{id}"), Authorize]
-    public ActionResult DeleteProduct(Guid id)
+    public ActionResult DeleteProduct(string id)
     {
-        System.Diagnostics.Debug.WriteLine(id);
 
-        var product = products.FirstOrDefault(e => e.Id == id);
+        var product = products.FirstOrDefault(e => e.Id.ToString() == id);
         if (product != null)
         {
             products.Remove(product);
